@@ -1,4 +1,10 @@
-import React, { Component, ChangeEvent, useState, useEffect } from "react";
+import React, {
+  useState,
+  forwardRef,
+  useImperativeHandle,
+  useEffect,
+  useMemo,
+} from "react";
 import {
   Button,
   Row,
@@ -10,58 +16,7 @@ import {
   FormControl,
 } from "react-bootstrap";
 
-interface scoreProps {
-  num?: string;
-}
-
-interface scoreState {
-  score: Array<string>;
-}
-
-class InputForm extends Component<scoreProps, scoreState> {
-  constructor(props: scoreProps) {
-    super(props);
-
-    this.state = {
-      score: [],
-    };
-  }
-
-  handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      score: [...this.state.score, e.target.value],
-    });
-    console.log(this.state.score);
-  };
-
-  render() {
-    return (
-      <Row>
-        <h6>
-          P{this.props.num}의 현재 점수: {this.state.score}
-        </h6>
-        <InputGroup className="mb-3">
-          <InputGroup.Text>P{this.props.num}</InputGroup.Text>
-          <FormControl
-            value={this.state.score[0]}
-            onChange={this.handleChange}
-          />
-          <FormControl aria-label="2" />
-          <FormControl aria-label="3" />
-          <FormControl aria-label="4" />
-          <FormControl aria-label="5" />
-          <FormControl aria-label="6" />
-          <FormControl aria-label="7" />
-          <FormControl aria-label="8" />
-          <FormControl aria-label="9" />
-          <FormControl aria-label="10" />
-        </InputGroup>
-      </Row>
-    );
-  }
-}
-
-export default function score() {
+export default function Score() {
   return (
     <Container fluid>
       <head>
@@ -87,11 +42,54 @@ export default function score() {
         <h1 className="text-center">Score</h1>
       </Row>
 
-      <InputForm num="1" />
-
-      <Row>
-        <Col>Footer</Col>
-      </Row>
+      <InputForm row_num="1" />
+      <InputForm row_num="2" />
+      <InputForm row_num="3" />
+      <InputForm row_num="4" />
+      <InputForm row_num="5" />
     </Container>
+  );
+}
+
+function InputForm(props: any) {
+  const [score, setScore] = useState(["", "", "", "", "", "", "", "", "", ""]);
+  const [sum, setSum] = useState("");
+
+  const HandleChange = (e: any, col_num: number) => {
+    let tmp = score;
+
+    tmp[col_num] = e.target.value;
+    if (tmp !== score) {
+      setScore(tmp);
+    }
+
+    sumScore();
+  };
+
+  const sumScore = () => {
+    setSum(
+      score.reduce((x: string, y: string) => String(Number(x) + Number(y)))
+    );
+  };
+
+  return (
+    <Row>
+      <h6>
+        P{props.row_num}의 현재 점수: {sum}
+      </h6>
+      <InputGroup className="mb-3">
+        <InputGroup.Text>P{props.row_num}</InputGroup.Text>
+        <FormControl value={score[0]} onChange={(e) => HandleChange(e, 0)} />
+        <FormControl value={score[1]} onChange={(e) => HandleChange(e, 1)} />
+        <FormControl value={score[2]} onChange={(e) => HandleChange(e, 2)} />
+        <FormControl value={score[3]} onChange={(e) => HandleChange(e, 3)} />
+        <FormControl value={score[4]} onChange={(e) => HandleChange(e, 4)} />
+        <FormControl value={score[5]} onChange={(e) => HandleChange(e, 5)} />
+        <FormControl value={score[6]} onChange={(e) => HandleChange(e, 6)} />
+        <FormControl value={score[7]} onChange={(e) => HandleChange(e, 7)} />
+        <FormControl value={score[8]} onChange={(e) => HandleChange(e, 8)} />
+        <FormControl value={score[9]} onChange={(e) => HandleChange(e, 9)} />
+      </InputGroup>
+    </Row>
   );
 }
