@@ -50,17 +50,15 @@ export default function Score() {
         <link rel="icon" href="/favicon.ico" />
       </head>
       <Row>
-        <Col>
-          <Navbar bg="dark" variant="dark">
-            <Container>
-              <Navbar.Brand href="/">Ppong</Navbar.Brand>
-              <Nav className="me-auto">
-                <Nav.Link href="/">Score & Money</Nav.Link>
-              </Nav>
-            </Container>
-          </Navbar>
-        </Col>
+        <Navbar bg="dark" variant="dark">
+          <Navbar.Brand href="/">Ppong</Navbar.Brand>
+          <Nav className="me-auto">
+            <Nav.Link href="/">Score & Money</Nav.Link>
+          </Nav>
+        </Navbar>
       </Row>
+
+      <br />
 
       <Row>
         <h1 className="text-center">Score & Money</h1>
