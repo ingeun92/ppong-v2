@@ -11,23 +11,52 @@ import {
 } from "react-bootstrap";
 
 export default function Score() {
-  const [userNum, setUsernum] = useState("");
-  const [sumScore, setSumscore] = useState<Array<string>>(["", "", "", "", ""]);
-  const [money, setMoney] = useState<Array<string>>([]);
+  const [userNum, setUserNum] = useState("");
+  const [roundScore, setRoundScore] = useState<Array<number>>([0, 0, 0, 0, 0]);
+  const [gameScore, setGameScore] = useState<Array<number>>([0, 0, 0, 0, 0]);
+  const [viewAvg, setViewAvg] = useState(0);
+  const [money, setMoney] = useState<Array<number>>([]);
+  const [round, setRound] = useState(1);
 
-  const handleClick = () => {
-    const allScore = sumScore.reduce((x, y) => String(Number(x) + Number(y)));
-    const avgScore = Math.round(Number(allScore) / Number(userNum));
-    console.log("avgScore: ", avgScore);
-    let tmp = [];
+  const [signal, setSignal] = useState(0);
+
+  useEffect(() => {
+    const allRoundScore = roundScore.reduce((x, y) => x + y);
+    const avgRoundScore = allRoundScore / Number(userNum);
+    const viewAvg = Math.round(avgRoundScore);
+    setViewAvg(viewAvg);
+  }, [roundScore, userNum, viewAvg]);
+
+  const handleRoundClick = () => {
+    let tmp = [...gameScore];
 
     for (let i = 0; i < Number(userNum); i++) {
-      let subScore = avgScore - Number(sumScore[i]);
-      console.log("subScore", i, ": ", subScore);
-      tmp[i] = String(subScore * 200);
+      tmp[i] += roundScore[i];
     }
+    setGameScore(tmp);
 
+    setRound(round + 1);
+  };
+
+  const handleGameClick = () => {
+    let tmp = [];
+    const allGameScore = gameScore.reduce((x, y) => x + y);
+    const avgGameScore = allGameScore / Number(userNum);
+
+    for (let i = 0; i < Number(userNum); i++) {
+      const subScore = avgGameScore - gameScore[i];
+      tmp[i] = Math.round((subScore * 200) / 100) * 100;
+    }
     setMoney(tmp);
+
+    setRound(1);
+    setGameScore([0, 0, 0, 0, 0]);
+    setSignal(0);
+  };
+
+  const handleClearClick = () => {
+    setSignal(signal + 1);
+    setRoundScore([0, 0, 0, 0, 0]);
   };
 
   const moneyList = money.map((money, index) => (
@@ -38,8 +67,8 @@ export default function Score() {
     </Col>
   ));
 
-  const handleChange = (e: any) => {
-    setUsernum(e.target.value);
+  const handleUserChange = (e: any) => {
+    setUserNum(e.target.value);
   };
 
   return (
@@ -72,23 +101,71 @@ export default function Score() {
         </Col>
         <Col sm lg="1">
           <InputGroup>
-            <FormControl value={userNum} onChange={handleChange} />
+            <FormControl value={userNum} onChange={handleUserChange} />
           </InputGroup>
         </Col>
       </Row>
 
       <br />
 
-      <InputForm row_num="1" sumScore={sumScore} setSumscore={setSumscore} />
-      <InputForm row_num="2" sumScore={sumScore} setSumscore={setSumscore} />
-      <InputForm row_num="3" sumScore={sumScore} setSumscore={setSumscore} />
-      <InputForm row_num="4" sumScore={sumScore} setSumscore={setSumscore} />
-      <InputForm row_num="5" sumScore={sumScore} setSumscore={setSumscore} />
+      <Row>
+        <Col>
+          <h6 className="text-center">현재 라운드: {round}</h6>
+        </Col>
+        <Col>
+          <h6 className="text-center">현재 라운드 평균 점수: {viewAvg}</h6>
+        </Col>
+      </Row>
+
+      <InputForm
+        row_num="1"
+        roundScore={roundScore}
+        setRoundScore={setRoundScore}
+        gameScore={gameScore[0]}
+        signal={signal}
+      />
+      <InputForm
+        row_num="2"
+        roundScore={roundScore}
+        setRoundScore={setRoundScore}
+        gameScore={gameScore[1]}
+        signal={signal}
+      />
+      <InputForm
+        row_num="3"
+        roundScore={roundScore}
+        setRoundScore={setRoundScore}
+        gameScore={gameScore[2]}
+        signal={signal}
+      />
+      <InputForm
+        row_num="4"
+        roundScore={roundScore}
+        setRoundScore={setRoundScore}
+        gameScore={gameScore[3]}
+        signal={signal}
+      />
+      <InputForm
+        row_num="5"
+        roundScore={roundScore}
+        setRoundScore={setRoundScore}
+        gameScore={gameScore[4]}
+        signal={signal}
+      />
 
       <Row>{moneyList}</Row>
+
+      <br />
+
       <Row>
         <Col className="d-flex justify-content-center">
-          <Button onClick={handleClick}>Game End</Button>
+          <Button onClick={handleRoundClick}>Round End</Button>
+        </Col>
+        <Col className="d-flex justify-content-center">
+          <Button onClick={handleClearClick}>Clear</Button>
+        </Col>
+        <Col className="d-flex justify-content-center">
+          <Button onClick={handleGameClick}>Game End</Button>
         </Col>
       </Row>
     </Container>
@@ -117,17 +194,30 @@ function InputForm(props: any) {
   };
 
   useEffect(() => {
-    let tmp = [...props.sumScore];
-    tmp[Number(props.row_num) - 1] = sum;
-    props.setSumscore(tmp);
+    let tmp = [...props.roundScore];
+    tmp[Number(props.row_num) - 1] = Number(sum);
+    props.setRoundScore(tmp);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sum]);
 
+  useEffect(() => {
+    const tmp = [...Array(10)].map((_, i) => "");
+    setScore(tmp);
+    setSum("");
+  }, [props.signal]);
+
   return (
     <Row>
-      <h6>
-        P{props.row_num}의 현재 점수: {sum}
-      </h6>
+      <Col md="3">
+        <h6>
+          P{props.row_num}의 현재 라운드 점수: {sum}
+        </h6>
+      </Col>
+      <Col md="auto">
+        <h6>
+          P{props.row_num}의 총 점수: {props.gameScore}
+        </h6>
+      </Col>
       <InputGroup className="mb-3">
         <InputGroup.Text>P{props.row_num}</InputGroup.Text>
         <FormControl value={score[0]} onChange={(e) => HandleChange(e, 0)} />
