@@ -17,6 +17,7 @@ export default function Score() {
   const [viewAvg, setViewAvg] = useState(0);
   const [money, setMoney] = useState<Array<number>>([]);
   const [round, setRound] = useState(1);
+  const [dotMoney, setDotMoney] = useState("");
 
   const [signal, setSignal] = useState(0);
 
@@ -45,7 +46,7 @@ export default function Score() {
 
     for (let i = 0; i < Number(userNum); i++) {
       const subScore = avgGameScore - gameScore[i];
-      tmp[i] = Math.round((subScore * 200) / 100) * 100;
+      tmp[i] = Math.round((subScore * Number(dotMoney)) / 100) * 100;
     }
     setMoney(tmp);
 
@@ -69,6 +70,10 @@ export default function Score() {
 
   const handleUserChange = (e: any) => {
     setUserNum(e.target.value);
+  };
+
+  const handleDotChange = (e: any) => {
+    setDotMoney(e.target.value);
   };
 
   return (
@@ -95,13 +100,23 @@ export default function Score() {
 
       <Row className="align-content-center">
         <Col
-          sm="auto"
+          md="auto"
           className="d-flex justify-content-center align-items-center">
-          User Number:
+          플레이 유저 수:
         </Col>
-        <Col sm lg="1">
+        <Col md="2">
           <InputGroup>
             <FormControl value={userNum} onChange={handleUserChange} />
+          </InputGroup>
+        </Col>
+        <Col
+          md="auto"
+          className="d-flex justify-content-center align-items-center">
+          점 당 금액:
+        </Col>
+        <Col md="2">
+          <InputGroup>
+            <FormControl value={dotMoney} onChange={handleDotChange} />
           </InputGroup>
         </Col>
       </Row>
