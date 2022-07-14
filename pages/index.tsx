@@ -235,16 +235,46 @@ function InputForm(props: any) {
       </Col>
       <InputGroup className="mb-3">
         <InputGroup.Text>P{props.row_num}</InputGroup.Text>
-        <FormControl value={score[0]} onChange={(e) => HandleChange(e, 0)} />
-        <FormControl value={score[1]} onChange={(e) => HandleChange(e, 1)} />
-        <FormControl value={score[2]} onChange={(e) => HandleChange(e, 2)} />
-        <FormControl value={score[3]} onChange={(e) => HandleChange(e, 3)} />
-        <FormControl value={score[4]} onChange={(e) => HandleChange(e, 4)} />
-        <FormControl value={score[5]} onChange={(e) => HandleChange(e, 5)} />
-        <FormControl value={score[6]} onChange={(e) => HandleChange(e, 6)} />
-        <FormControl value={score[7]} onChange={(e) => HandleChange(e, 7)} />
-        <FormControl value={score[8]} onChange={(e) => HandleChange(e, 8)} />
-        <FormControl value={score[9]} onChange={(e) => HandleChange(e, 9)} />
+        <FormControl
+          value={score[0]}
+          onChange={(e: any) => HandleChange(e, 0)}
+        />
+        <FormControl
+          value={score[1]}
+          onChange={(e: any) => HandleChange(e, 1)}
+        />
+        <FormControl
+          value={score[2]}
+          onChange={(e: any) => HandleChange(e, 2)}
+        />
+        <FormControl
+          value={score[3]}
+          onChange={(e: any) => HandleChange(e, 3)}
+        />
+        <FormControl
+          value={score[4]}
+          onChange={(e: any) => HandleChange(e, 4)}
+        />
+        <FormControl
+          value={score[5]}
+          onChange={(e: any) => HandleChange(e, 5)}
+        />
+        <FormControl
+          value={score[6]}
+          onChange={(e: any) => HandleChange(e, 6)}
+        />
+        <FormControl
+          value={score[7]}
+          onChange={(e: any) => HandleChange(e, 7)}
+        />
+        <FormControl
+          value={score[8]}
+          onChange={(e: any) => HandleChange(e, 8)}
+        />
+        <FormControl
+          value={score[9]}
+          onChange={(e: any) => HandleChange(e, 9)}
+        />
       </InputGroup>
     </Row>
   );
