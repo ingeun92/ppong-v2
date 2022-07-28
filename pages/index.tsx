@@ -85,10 +85,14 @@ export default function Score() {
       </div>
       <Row>
         <Navbar bg="dark" variant="dark">
-          <Navbar.Brand href="/">Ppong</Navbar.Brand>
-          <Nav className="me-auto">
-            <Nav.Link href="/">Score & Money</Nav.Link>
-          </Nav>
+          <Col md="2" className="ps-4">
+            <Navbar.Brand href="/">Ppong</Navbar.Brand>
+          </Col>
+          <Col md="auto">
+            <Nav>
+              <Nav.Link href="/">Score & Money</Nav.Link>
+            </Nav>
+          </Col>
         </Navbar>
       </Row>
 
